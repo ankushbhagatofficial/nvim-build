@@ -1,0 +1,45 @@
+#!/bin/bash
+
+
+architecture=$(dpkg --print-architecture)
+device=$(uname -o)
+
+main()
+{
+$CP binary/$DIR/nvim.$arch $PREFIX/bin/nvim
+echo "NVIM 0.5 has been installed."
+}
+
+if [[ ${device} == *"Android"* ]]
+then
+CP=cp
+DIR=termux
+case "$architecture" in
+    aarch64)
+        arch=aarch64
+        ;;
+    arm)
+        arch=arm
+        ;;
+    armhf)
+        arch=arm
+        ;;
+    esac
+
+    main
+else
+    CP="sudo cp"
+    DIR=linux
+    PREFIX=/usr
+    case "$architecture" in
+    amd64)
+        arch=amd64
+        ;;
+    arm64)
+        arch=arm64
+        ;;
+    esac
+
+    main
+fi
+
